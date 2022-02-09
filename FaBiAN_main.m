@@ -136,11 +136,11 @@ addpath('Utilities')
 Fetal_Brain = brain_model(Fetal_Brain_model_path, GA);
 
 % Convert the shift variable into a number of voxels
-shift = shift_mm / SimRes;  %in voxels
+shift = shift_mm / SimRes;  %in voxels. 
 
 % Define the slice slab that covers the fetal brain volume based on the
 % shift variable in the slice thickness direction and the acquisition plane
-Fetal_Brain = FOV_shift(Fetal_Brain, shift, orientation);
+Fetal_Brain = FOV_shift(Fetal_Brain, shift, orientation); 
 
 % Load the intensity non-uniformity fields
 b1map = brainWeb_inu(inu, Fetal_Brain);
