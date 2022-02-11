@@ -45,7 +45,8 @@ addpath('Utilities')
 % brain for automatic segmentation and analysis of early brain growth.
 % Scientific Reports 7, 476 (2017).
 % https://doi.org/10.1038/s41598-017-00525-w
-Fetal_Brain_model_path = '/data/Simu_FSE/Atlas/CRL_Fetal_Brain_Atlas_2017v3/';
+%Fetal_Brain_model_path = '/data/Simu_FSE/Atlas/CRL_Fetal_Brain_Atlas_2017v3/';
+Fetal_Brain_model_path = 'C:/Users/admin/Desktop/FABIAN/FaBiAN/data/Simu_FSE/Atlas/CRL_FetalBrainAtlas_2017v3/';
 % Gestational age (in weeks)
 GA = 26;
 % Resolution of the Fetal_Brain images (isotropic, in mm)
@@ -59,7 +60,8 @@ orientation = 3;
 % Non-linear slowly-varying intensity non-uniformity (INU) fields (b1+) can
 % be downloaded from BrainWeb database:
 % https://brainweb.bic.mni.mcgill.ca/brainweb/about_sbd.html
-inu = '/data/Simu_FSE/rf20_B.rawb';
+%inu = '/data/Simu_FSE/rf20_B.rawb';
+inu = 'C:/Users/admin/Desktop/FABIAN/FaBiAN/data/Simu_FSE/rf20_B.rawb';
 % Define a sampling factor to subdivide the volume in the slice thickness
 % orientation
 sampling_factor = SimRes / 0.1;
@@ -132,7 +134,7 @@ HASTE_Images = FaBiAN_main(Fetal_Brain_model_path, ...
 %       orientation=sagittal; shift=-1.6mm                                %
 %       strong motion of the fetus                                        %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+asdsa
 clc
 clear all
 close all
