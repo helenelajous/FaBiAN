@@ -48,16 +48,16 @@ addpath('Utilities')
 %Fetal_Brain_model_path = '/data/Simu_FSE/Atlas/CRL_Fetal_Brain_Atlas_2017v3/';
 Fetal_Brain_model_path = './data/Simu_FSE/Atlas/CRL_FetalBrainAtlas_2017v3/';
 % Gestational age (in weeks)
-GA = 26;
+GA = 27;
 % Resolution of the Fetal_Brain images (isotropic, in mm)
-%SimRes = 0.8;
-SimRes = 0.1;
+SimRes = 0.8;
+%SimRes = 0.1;
 % Introduce a shift variable to slightly shift the slice series between two
 % simulations in the same orientation
 shift_mm = 0;   %mm
 % Choose the orientation plane of the acquisitions
 % (1: sagittal, 2: coronal, 3: axial)
-orientation = 3;
+orientation = 2;
 % Non-linear slowly-varying intensity non-uniformity (INU) fields (b1+) can
 % be downloaded from BrainWeb database:
 % https://brainweb.bic.mni.mcgill.ca/brainweb/about_sbd.html
@@ -66,8 +66,8 @@ inu = './data/Simu_FSE/rf20_B.rawb';
 % Define a sampling factor to subdivide the volume in the slice thickness
 % orientation
 %sampling_factor = SimRes / 0.1;
-sampling_factor = SimRes / 0.8;
-% Main magnetic field strength
+sampling_factor = 1;
+% Main magnetic field strength  
 B0 = 1.5;
 % Acquisition parameters
 ESP = 4.08;  %ms
@@ -75,22 +75,30 @@ ESP = 4.08;  %ms
 ETL = 224;
 % Geometry
 PhaseOversampling = 0.803571000000000;
-SliceThickness = 3; %mm
-SliceGap = 0.3; %mm
+SliceThickness = 3.2; %mm
+SliceGap = 0.8; %mm
+% SliceThickness = 3; %mm
+% SliceGap = 0.3; %mm
+
 % Resolution
+
+% FOVRead = 360;  %mm
+% FOVPhase = 360; %mm
 FOVRead = 360;  %mm
 FOVPhase = 360; %mm
-BaseResolution = 327;   %voxels
+%BaseResolution = 327;   %voxels
+BaseResolution = 327;     %voxels
 PhaseResolution = 0.7;
 % Contrast
 TR = 4.08;  %ms
 TEeff = 90; %ms
 % Acceleration technique
-ACF = 2;
+ACF = 1;
 %ACF = 1;
-RefLines = 42;
+RefLines = 0;
 % Motion
-motion_level = 1;   %little motion
+motion_level = 0;   
+%motion_level = 0;   %no motion
 % Scanner zero-interpolation filling (ZIP)
 % (0: no ZIP; 1: Fermi filtering in k-space and ZIP)
 zip = 0;

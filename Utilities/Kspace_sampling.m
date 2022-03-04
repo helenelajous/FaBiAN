@@ -203,7 +203,7 @@ for iSlice=1:length(interleavedSlices_index)
     % Simulation of k-space sampling as for FSE sequences
 %     tic
     for iEcho=1:size(Sl_Volume,4)
-        clc;
+        %clc;
         disp(['Echo ', num2str(iEcho), ' of ', num2str(size(Sl_Volume,4))])
         SLAB(:,:,interleavedSlices_index(iSlice),iEcho) = Resize_Volume(fft2c(Resize_Volume(Sl_Volume(:,:,interleavedSlices_index(iSlice),iEcho), [FOVRead/SimRes, round(FOVPhase)/SimRes, NbSlices])), [BaseResolution, nPE, NbSlices]);
     end
@@ -257,6 +257,7 @@ for iSlice=1:length(interleavedSlices_index)
 end
 
 % Display computation time
-fprintf('Computation time to sample k-space: %0.5f seconds.\n', toc);
+time3=toc;
+fprintf('Computation time to sample k-space: %0.5f seconds.\n', time3);
 
 end

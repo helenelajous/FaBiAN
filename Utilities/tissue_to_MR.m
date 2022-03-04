@@ -188,6 +188,7 @@ ref_T1map = reshape(ref_T1map, size(Fetal_Brain));
 ref_T2map = reshape(ref_T2map, size(Fetal_Brain));
 
 % Display computation time
-fprintf('Computation time to convert segmented high-resolution anatomical images of the fetal brain to MR contrast: %0.5f seconds.\n', toc);
+time1= toc;
+fprintf('Computation time to convert segmented high-resolution anatomical images of the fetal brain to MR contrast: %0.5f seconds.\n', time1);
 
 end
