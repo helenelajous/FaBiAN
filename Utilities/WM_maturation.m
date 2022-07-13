@@ -40,7 +40,7 @@ unwrap_ref_T1map = ref_T1map(:);
 unwrap_ref_T2map = ref_T2map(:);
 
 %Import and set up Partial Volume Maps from FAST segmentation tool
-path = 'C:\Users\admin\Desktop\GMM and FAST segmentations on White matter\FAST_Clustering';
+path = '.\data\atlas_fast_clustering';
 pve0 = niftiread(strcat(path, '\STA', sprintf('%02s', num2str(GA)), '\STA', sprintf('%02s', num2str(GA)), '_WM_pve_0.nii.gz'));
 pve1 = niftiread(strcat(path, '\STA', sprintf('%02s', num2str(GA)), '\STA', sprintf('%02s', num2str(GA)), '_WM_pve_1.nii.gz'));
 pve2 = niftiread(strcat(path, '\STA', sprintf('%02s', num2str(GA)), '\STA', sprintf('%02s', num2str(GA)), '_WM_pve_2.nii.gz'));
