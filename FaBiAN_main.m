@@ -116,16 +116,17 @@ function FSE_Images = FaBiAN_main(Fetal_Brain_model_path, ...
                                                      zip, ...
                                              reconMatrix, ...
                                                std_noise, ...
-                                           output_folder)
+                                           output_folder, ...
+                                           WM_heterogeneity)
 
 % Input check
-if nargin < 26
+if nargin < 27
     error('Missing input(s).');
-elseif nargin > 26
+elseif nargin > 27
     error('Too many inputs.');
 end
 
-addpath('Utilities')
+addpath('C:\Users\admin\Desktop\FABIAN\Utilities')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Load fetal brain model and intensity non-uniformity fields             %
@@ -176,10 +177,8 @@ Fetal_Brain_Labels = Fetal_Brain_Labels(Fetal_Brain_Labels > 0);
 % Write labels of the different segmented brain tissues in a list
 Fetal_Brain_Tissues = permute(Fetal_Brain_Labels, [2,1]);
 
-%%% Generate reference T1 and T2 maps of the fetal brain - GHOLIPOUR
-%[ref_T1map, ref_T2map] = tissue_to_MR(Fetal_Brain_upsampled, Fetal_Brain_Tissues, B0, GA);
-%%% Generate reference T1 and T2 maps of the fetal brain - FETA
-[ref_T1map, ref_T2map] = tissue_to_MR_for_feta(Fetal_Brain_upsampled, Fetal_Brain_Tissues, B0, GA);
+%%% Generate reference T1 and T2 maps of the fetal brain
+[ref_T1map, ref_T2map] = tissue_to_MR(Fetal_Brain_upsampled, Fetal_Brain_Tissues, WM_heterogeneity, orientation, B0, GA);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Extended Phase Graph (EPG) simulations                                 %
@@ -230,6 +229,10 @@ T2decay_zp = Resize_Volume(T2decay, [T2decay_MaxDim, T2decay_MaxDim, T2decay_Max
 % There might be a couple of slices that are just zeros due to this
 % zero-padding step.
 
+% In the same way, zero-padding of the segmented fetal brain images after
+% upsampling
+Fetal_Brain_zp = Resize_Volume(Fetal_Brain_upsampled, [T2decay_MaxDim, T2decay_MaxDim, T2decay_MaxDim*sampling_factor]);
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  K-space sampling of the simulated FSE images                           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -269,7 +272,26 @@ KSpace = Kspace_sampling(              T2decay_zp, ...
                                    BaseResolution, ...
                                               nPE, ...
                                               ACF, ...
-                                         RefLines);
+                                         RefLines, ...
+                                               GA, ...
+                                 WM_heterogeneity, ...
+                                         orientation);
+
+Simu_Labels = auto_segmentation(          Fetal_Brain_zp, ...
+                                             Fetal_Brain, ...
+                                                  SimRes, ...
+                                         sampling_factor, ...
+                                          SliceThickness, ...
+                                              SubunitRes, ...
+                                                 FOVRead, ...
+                                                FOVPhase, ...
+                                                NbSlices, ...
+                                 interleavedSlices_index, ...
+                                                Sl_to_Sl, ...
+                                 motion_corrupted_slices, ...
+                                translation_displacement, ...
+                                          rotation_angle, ...
+                                           rotation_axis);
 
 % Simulate scanner zero-interpolation filling (ZIP)
 if zip==1   %ZIP
@@ -287,6 +309,10 @@ KSpace_noise = add_noise(KSpace, std_noise);
 % Turn back data in K-space to the image space
 FSE_Images = imresize(ifft2c(KSpace_noise), [size(KSpace,1), round(size(KSpace,2)/PhaseResolution)]);
 
+Label_Map_recon = imresize(Simu_Labels, [size(KSpace,1), round(size(KSpace,2)/PhaseResolution)], 'nearest');
+
+save_nii_images(FSE_Images, Label_Map_recon, output_folder);
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Save data                                                              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -294,6 +320,7 @@ FSE_Images = imresize(ifft2c(KSpace_noise), [size(KSpace,1), round(size(KSpace,2
 % save(strcat(output_folder, 'KSpace'), 'KSpace', '-v7.3');
 save(strcat(output_folder, 'KSpace_noise'), 'KSpace_noise', '-v7.3');
 save(strcat(output_folder, 'Fetal_Brain_FSE_Images'), 'FSE_Images', '-v7.3');
+save(strcat(output_folder, 'Label_Map_recon'), 'Label_Map_recon', '-v7.3');
 save(strcat(output_folder, 'Motion_Transforms'), 'motion_corrupted_slices', 'translation_displacement', 'rotation_angle', 'rotation_axis');
 
 end

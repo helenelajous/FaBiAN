@@ -2,11 +2,12 @@
 *.asv
 /prueba.m
 /Utilities/cp_cpmg_epg_domain_fplus_fminus.m
-/Utilities/im5D.m
-auto_FaBiAN.m
+/auto_FaBiAN.m
+.m
 draft.m
 iterative_auto_FaBiAN.m
 iterative_FaBiAN_demo.m
-Utilities/tissue_to_MR_for_feta.m
 Utilities/diff_images.m
 Utilities/diff_images2.m
+Utilities/im5D.m
+Utilities/tissue_to_MR_for_feta.m
