@@ -176,8 +176,10 @@ Fetal_Brain_Labels = Fetal_Brain_Labels(Fetal_Brain_Labels > 0);
 % Write labels of the different segmented brain tissues in a list
 Fetal_Brain_Tissues = permute(Fetal_Brain_Labels, [2,1]);
 
-% Generate reference T1 and T2 maps of the fetal brain
-[ref_T1map, ref_T2map] = tissue_to_MR(Fetal_Brain_upsampled, Fetal_Brain_Tissues, B0);
+%%% Generate reference T1 and T2 maps of the fetal brain - GHOLIPOUR
+%[ref_T1map, ref_T2map] = tissue_to_MR(Fetal_Brain_upsampled, Fetal_Brain_Tissues, B0, GA);
+%%% Generate reference T1 and T2 maps of the fetal brain - FETA
+[ref_T1map, ref_T2map] = tissue_to_MR_for_feta(Fetal_Brain_upsampled, Fetal_Brain_Tissues, B0, GA);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Extended Phase Graph (EPG) simulations                                 %

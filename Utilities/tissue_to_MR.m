@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Function that converts segmented anatomical MR images of the fetal     %
 %  brain to the corresponding reference T1 and T2 maps depending on the   %
 %  main magnetic field strength B0.                                       %
@@ -113,12 +113,13 @@
 
 function [ref_T1map, ref_T2map] = tissue_to_MR(        Fetal_Brain, ...
                                                Fetal_Brain_Tissues, ...
-                                                                B0)
+                                                                B0, ...
+                                                                GA)
 
 % Input check
-if nargin < 3
+if nargin < 4
     error('Missing input(s).');
-elseif nargin > 3
+elseif nargin > 4
     error('Too many inputs!');
 end
 
@@ -186,6 +187,10 @@ for label=Fetal_Brain_Tissues(1:length(Fetal_Brain_Tissues))
 end
 ref_T1map = reshape(ref_T1map, size(Fetal_Brain));
 ref_T2map = reshape(ref_T2map, size(Fetal_Brain));
+[ref_T1map, ref_T2map] = WM_maturation(ref_T1map, ref_T2map, ...
+                                       'C:\Users\admin\Desktop\GMM and FAST segmentations on White matter\FAST_Clustering', ...
+                                        'FAST', ...
+                                         GA);
 
 % Display computation time
 time1= toc;
