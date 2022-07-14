@@ -1,7 +1,7 @@
 # -----------------------------------------------------------
 # Python script to crop the white matter volume from the 
-# high resolution reference model and apply on it a 3 class 
-# unsupervised segmentation through FAST-FSL tool
+# high resolution reference model and apply on it a 3 classes 
+# unsupervised segmentation through FAST-FSL tool.
 # 
 # REQUIRES FSL (https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FAST)
 # Note: Since FSL tools work only in linux based OS, this script 
@@ -65,5 +65,5 @@ def fsl(input_image, output_basename):
 
 if __name__ == "__main__":
 
-    folder_path = r"/home/dres/ClusteringTest/Clustering_Test/Gholipour"
+    folder_path = r'..\data\atlas_fast_clustering'
     extract_WM(folder_path)
