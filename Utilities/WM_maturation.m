@@ -17,7 +17,7 @@
 %           - WM_T2map: tuned T2 map of the fetal brain                   %
 %                                                                         %
 %                                                                         %
-%  le Boeuf Andrés, 2022-07-13                                            %
+%  le Boeuf Andrés, 2022-03-23                                            %
 %  andres.le.boeuf@estudiantat.upc.edu                                    %
 %                                                                         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%sss

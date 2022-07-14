@@ -115,7 +115,7 @@
 %  Hélène Lajous, 2020-05-10                                              %
 %  Adapted from: XCAT_to_MR.m (https://github.com/cwroy/Fetal-XCMR/)      %
 %  helene.lajous@unil.ch                                                  %
-%  Modified by Andrés le Boeuf, 2022-07-13                                %
+%  Modified by Andrés le Boeuf, 2022-03-23                                %
 %  andres.le.boeuf@estudiantat.ucp.edu                                    %
 %                                                                         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
