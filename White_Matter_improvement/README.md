@@ -22,7 +22,9 @@ Note: Make sure that the partial volume map paths are correct in *Utilities/WM_m
 
 ## Contact
 For any questions, please contact: 
+
 Andrés le Boeuf
+
 andres.le.boeuf@estudiantat.upc.edu
 
 OR
