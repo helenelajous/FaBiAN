@@ -21,10 +21,8 @@ The code from this folder is adapted to work on the public Gholipour's normative
 Note: Make sure that the partial volume map paths are correct in *Utilities/WM_maturation.m*
 
 ## Contact
-For any questions, please contact: 
-
-Andrés le Boeuf
-
+For any questions, please contact:\
+Andrés le Boeuf\
 andres.le.boeuf@estudiantat.upc.edu
 
 OR
