@@ -3,15 +3,23 @@
 %  brain to the corresponding reference T1 and T2 maps depending on the   %
 %  main magnetic field strength B0.                                       %
 %                                                                         %
-%       [ref_T1map, ref_T2map] = tissue_to_MR(        Fetal_Brain, ...    %
-%                                             Fetal_Brain_Tissues, ...    %
-%                                                              B0);       %
+% [ref_T1map, ref_T2map] = tissue_to_MR(        Fetal_Brain, ...          %
+%                                       Fetal_Brain_Tissues, ...          %
+%                                          WM_heterogeneity, ...          %
+%                                               orientation, ...          % 
+%                                                        B0, ...          %
+%                                                        GA)              % 
 %                                                                         %
 %  inputs:  - Fetal_Brain: segmented high-resolution 3D volume of the     %
 %                          fetal brain                                    %
 %           - Fetal_Brain_Tissues: list of tissues in the fetal brain     %
 %                                  that were segmented and labeled        %
 %           - B0: main magnetic field strength                            %
+%           - WM_heterogeneity: boolean value which decides wether        %
+%                               implement or not white matter maturation  %
+%                               processes in the simulated image          %
+%           - B0: main magnetic field strength                            %
+%           - GA: gestational age of the fetus (in weeks)                 %
 %                                                                         %
 %  outputs: - ref_T1map: reference T1 map of the fetal brain              %
 %           - ref_T2map: reference T2 map of the fetal brain              %
@@ -107,21 +115,18 @@
 %  Hélène Lajous, 2020-05-10                                              %
 %  Adapted from: XCAT_to_MR.m (https://github.com/cwroy/Fetal-XCMR/)      %
 %  helene.lajous@unil.ch                                                  %
+%  Modified by Andrés le Boeuf, 2022-03-23                                %
+%  andres.le.boeuf@estudiantat.ucp.edu                                    %
 %                                                                         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 function [ref_T1map, ref_T2map] = tissue_to_MR(        Fetal_Brain, ...
                                                Fetal_Brain_Tissues, ...
-                                                                B0)
-
-% Input check
-if nargin < 3
-    error('Missing input(s).');
-elseif nargin > 3
-    error('Too many inputs!');
-end
-
+                                                  WM_heterogeneity, ...
+                                                       orientation, ...
+                                                                B0, ...
+                                                                GA)  
 % Assign T1 and T2 values to every fetal tissue according to its label
 Tissue(37,:) = [2000, 162, 2500, 162];
 Tissue(38,:) = [2000, 162, 2500, 162];
@@ -184,10 +189,20 @@ for label=Fetal_Brain_Tissues(1:length(Fetal_Brain_Tissues))
         ref_T2map(brain(k)) = Tissue(label, T2_index);
     end
 end
+
 ref_T1map = reshape(ref_T1map, size(Fetal_Brain));
 ref_T2map = reshape(ref_T2map, size(Fetal_Brain));
 
+% White matter maturation processes implementation
+if WM_heterogeneity == 1
+    [ref_T1map, ref_T2map] = WM_maturation(ref_T1map, ...
+                                           ref_T2map, ...
+                                                  GA, ...
+                                         orientation);
+end
+
 % Display computation time
-fprintf('Computation time to convert segmented high-resolution anatomical images of the fetal brain to MR contrast: %0.5f seconds.\n', toc);
+time1= toc;
+fprintf('Computation time to convert segmented high-resolution anatomical images of the fetal brain to MR contrast: %0.5f seconds.\n', time1);
 
 end

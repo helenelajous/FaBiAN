@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  This demonstration script of FaBiAN use and functionalities generates  %
 %  T2-weighted MR images of the fetal brain based on highly flexible      %
 %  simulations of fast spin echo (FSE) sequences from various MR vendors  %
@@ -26,16 +26,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  (i) HASTE acquisition (Siemens Healthineers)                           %
 %      B0=1.5T;                                                           %
-%      GA=26weeks;                                                        %
+%      GA=21weeks;                                                        %
 %      orientation=axial; no shift                                        %
-%      little motion of the fetus                                         %
+%      no motion of the fetus                                             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-clc
-clear all
-close all
+% clc
+% clear all
+% close all
 
-addpath('Utilities')
+addpath('C:\Users\admin\Desktop\FABIAN\Utilities')
 
 % Fetal brain model: In this demonstration, we base our simulations on
 % segmented high-resolution anatomical MR images of the fetal brain that
@@ -45,11 +45,13 @@ addpath('Utilities')
 % brain for automatic segmentation and analysis of early brain growth.
 % Scientific Reports 7, 476 (2017).
 % https://doi.org/10.1038/s41598-017-00525-w
-Fetal_Brain_model_path = '/data/Simu_FSE/Atlas/CRL_Fetal_Brain_Atlas_2017v3/';
+%Fetal_Brain_model_path = '/data/Simu_FSE/Atlas/CRL_Fetal_Brain_Atlas_2017v3/';
+Fetal_Brain_model_path = 'C:\Users\admin\Desktop\FABIAN\data\Simu_FSE\Atlas\CRL_FetalBrainAtlas_2017v3\';
 % Gestational age (in weeks)
-GA = 26;
+GA = 21;
 % Resolution of the Fetal_Brain images (isotropic, in mm)
 SimRes = 0.8;
+%SimRes = 0.1;
 % Introduce a shift variable to slightly shift the slice series between two
 % simulations in the same orientation
 shift_mm = 0;   %mm
@@ -59,19 +61,21 @@ orientation = 3;
 % Non-linear slowly-varying intensity non-uniformity (INU) fields (b1+) can
 % be downloaded from BrainWeb database:
 % https://brainweb.bic.mni.mcgill.ca/brainweb/about_sbd.html
-inu = '/data/Simu_FSE/rf20_B.rawb';
+%inu = '/data/Simu_FSE/rf20_B.rawb';
+inu = 'C:\Users\admin\Desktop\FABIAN\data\Simu_FSE\rf20_B.rawb';
 % Define a sampling factor to subdivide the volume in the slice thickness
 % orientation
 sampling_factor = SimRes / 0.1;
-% Main magnetic field strength
+%sampling_factor = 1;
+% Main magnetic field strength  
 B0 = 1.5;
 % Acquisition parameters
 ESP = 4.08;  %ms
 ETL = 224;
 % Geometry
 PhaseOversampling = 0.803571000000000;
-SliceThickness = 3; %mm
-SliceGap = 0.3; %mm
+SliceThickness = 3.2; %mm
+SliceGap = 0.8; %mm
 % Resolution
 FOVRead = 360;  %mm
 FOVPhase = 360; %mm
@@ -80,11 +84,13 @@ PhaseResolution = 0.7;
 % Contrast
 TR = 4.08;  %ms
 TEeff = 90; %ms
+% White matter heterogeneity implementation
+WM_heterogeneity = 1;
 % Acceleration technique
 ACF = 2;
 RefLines = 42;
-% Motion
-motion_level = 1;   %little motion
+% Motion  
+motion_level = 0;   %no motion
 % Scanner zero-interpolation filling (ZIP)
 % (0: no ZIP; 1: Fermi filtering in k-space and ZIP)
 zip = 0;
@@ -122,7 +128,10 @@ HASTE_Images = FaBiAN_main(Fetal_Brain_model_path, ...
                                               zip, ...
                                       reconMatrix, ...
                                         std_noise, ...
-                                    output_folder);
+                                    output_folder, ...
+                                      WM_heterogeneity);
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -132,7 +141,6 @@ HASTE_Images = FaBiAN_main(Fetal_Brain_model_path, ...
 %       orientation=sagittal; shift=-1.6mm                                %
 %       strong motion of the fetus                                        %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 clc
 clear all
 close all
@@ -147,7 +155,7 @@ addpath('Utilities')
 % brain for automatic segmentation and analysis of early brain growth.
 % Scientific Reports 7, 476 (2017).
 % https://doi.org/10.1038/s41598-017-00525-w
-Fetal_Brain_model_path = '/data/Simu_FSE/Atlas/CRL_Fetal_Brain_Atlas_2017v3/';
+Fetal_Brain_model_path = './data/Simu_FSE/Atlas/CRL_Fetal_Brain_Atlas_2017v3/';
 % Gestational age (in weeks)
 GA = 33;
 % Resolution of the Fetal_Brain images (isotropic, in mm)
@@ -161,7 +169,7 @@ orientation = 1;
 % Non-linear slowly-varying intensity non-uniformity (INU) fields (b1+) can
 % be downloaded from BrainWeb database:
 % https://brainweb.bic.mni.mcgill.ca/brainweb/about_sbd.html
-inu = '/data/Simu_FSE/rf20_B.rawb';
+inu = './data/Simu_FSE/rf20_B.rawb';
 % Define a sampling factor to subdivide the volume in the slice thickness
 % orientation
 sampling_factor = SimRes / 0.1;
@@ -182,8 +190,11 @@ PhaseResolution = 1;
 % Contrast
 TR = 10;  %ms
 TEeff = 118.08; %ms
+% White matter heterogeneity implementation
+WM_heterogeneity = 0;
 % Acceleration technique
-ACF = 1;
+ACF = 2;
+%ACF = 1;
 RefLines = 0;
 % Motion
 motion_level = 3;
@@ -197,7 +208,8 @@ std_noise = 0.01;
 output_folder = output_name(          GA, ...
                             motion_level, ...
                              orientation, ...
-                                shift_mm);
+                                shift_mm, ...
+                             WM_heterogeneity);
 
 SSFSE_Images = FaBiAN_main(Fetal_Brain_model_path, ...
                                                GA, ...
@@ -224,4 +236,5 @@ SSFSE_Images = FaBiAN_main(Fetal_Brain_model_path, ...
                                               zip, ...
                                       reconMatrix, ...
                                         std_noise, ...
-                                    output_folder);
+                                    output_folder, ...
+                                      WM_heterogeneity);
