@@ -1,4 +1,4 @@
-# White matter maturation processes implementation in FaBiAN simulator
+White matter maturation processes implementation in FaBiAN simulator
 ===========================================================================
 
 The code from this folder is adapted to work on the public Gholipour's normative spatiotemporal fetal brain [atlas](http://crl.med.harvard.edu/research/fetal_brain_atlas/).
