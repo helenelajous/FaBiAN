@@ -13,7 +13,7 @@ import numpy as np
 from sklearn.mixture import GaussianMixture
 import nibabel as nib
 
-def gmm(seg_path, path, K, covariance='full', warm_start=True):
+def _gmm(seg_path, path, K, covariance='full', warm_start=True):
     """
     This function apply GMM algorithm to the image forwarded as 
     its path with K classes. Saves the clustered nifti image
@@ -44,7 +44,7 @@ def gmm(seg_path, path, K, covariance='full', warm_start=True):
     #Trains the GMM model
     gmm.fit(Z)
     #Sort means of each class to match labels between segmentations and with FAST method
-    gmm.means_ = sort(gmm.means_)
+    gmm.means_ = _sort(gmm.means_)
     #Applies the predictions from the model to the image
     labels = gmm.predict(Z)
     prob_maps = gmm.predict_proba(Z)
@@ -116,9 +116,9 @@ def segment(folder_path, classes):
                 seg_path = path + "\\" + files 
 
         print("Performing GMM clustering on " + seg_path.split("\\")[-1])
-        gmm(seg_path, path, classes, covariance='full', warm_start=True)
+        _gmm(seg_path, path, classes, covariance='full', warm_start=True)
         
-def sort(array):
+def _sort(array):
     """
     Sorts an array to match the order of labels between segmentations and with FAST method
 

@@ -51,9 +51,9 @@ def extract_WM(folder_path):
                 nib.save(wm_image,save_path) 
                 print("Applying FAST to: ",fsl_path)
 
-                fsl(fsl_path, fsl_path) 
+                _fsl(fsl_path, fsl_path) 
 
-def fsl(input_image, output_basename):
+def _fsl(input_image, output_basename):
     """
     Function which calls bash script to launch FSL
 
