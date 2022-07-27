@@ -39,29 +39,31 @@ def extract_WM(folder_path):
                 print("Extracting WM from " + brain_path.split("/")[-1] )
 
                 brain = nib.load(brain_path).get_fdata()
-                tissues = nib.load(tissue_path).get_fdata()
+                tissues_nii = nib.load(tissue_path)
+                tissues = tissues_nii.get_fdata()
+
                 # Create WM mask
                 tissues[~(np.isin(tissues,wm))] = 0
                 tissues[tissues!=0] = 1
                 # Apply WM mask to the high resolution reference volume
                 wm_tissue = brain*tissues
-                wm_image = nib.Nifti1Image(wm_tissue, np.eye(4))
-                save_path = path + "/" + path.split("/")[-1] + "_WM.nii"
-                fsl_path = save_path.split(".")[0]
-                nib.save(wm_image,save_path) 
-                print("Applying FAST to: ",fsl_path)
+                wm_image = nib.Nifti1Image(dataobj=wm_tissue, affine=tissues_nii.affine)
+                wm_image._header = tissues_nii.header
+                save_path = path + "/" + path.split("/")[-1] + "_WM.nii.gz"
+                
+                nib.save(img=wm_image,filename=save_path)  
+                print("Applying FAST to: ",save_path)
 
-                _fsl(fsl_path, fsl_path) 
+                _fsl(save_path) 
 
-def _fsl(input_image, output_basename):
+def _fsl(output_basename):
     """
     Function which calls bash script to launch FSL
 
-                inputs: - input_image: Path of the nifti image which the user
-                                       desire to apply FAST tool
-                        - output_basename: output nifti image(s) path
+                inputs: - output_basename: output nifti 
+                                            image(s) path
     """
-    subprocess.run(["./fsl_segment.sh", input_image, output_basename])
+    subprocess.run(["./fsl_segment.sh", output_basename])
 
 if __name__ == "__main__":
 

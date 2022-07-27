@@ -13,14 +13,12 @@
 
 if [ "$1" == "-h" ] ; then
     echo "Entrance variables: "
-    echo "\$1 = input nifti image path"
-    echo "\$2 = output nifti image(s) path"
+    echo "\$1 = output image base name"
     exit 1
 fi
 
 INPUT_IMAGE=$1
-OUTPUT_IMAGE=$2
 
 GETF0="/usr/local/fsl/bin/fast"
 
-$GETF0 -t 2 -n 3 -H 0.1 -I 4 -l 20.0 -o $1 $2
+$GETF0 -t 2 -n 3 -H 0.1 -I 4 -l 20.0 -o $1 
