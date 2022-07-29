@@ -91,6 +91,7 @@ end
 T2decay = reshape(T2decay, [size(Fetal_Brain_upsampled), size(T2decay,2)]);
 
 % Display computation time
-fprintf('Computation time to run EPG simulations in every voxel of the image: %0.5f seconds.\n', toc);
+time2=toc;
+fprintf('Computation time to run EPG simulations in every voxel of the image: %0.5f seconds.\n', time2);
 
 end

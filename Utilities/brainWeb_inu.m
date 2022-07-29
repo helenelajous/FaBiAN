@@ -41,7 +41,9 @@ x = 181;
 volume = zeros(x,y,z);
 
 % Read BrainWeb intensity non-uniformity fields (3D)
-f = fopen(inu, 'r');
+[f,msg] = fopen(inu, 'r');
+if f<1, error([msg ' File: ' inu]), end
+
 for i=1:z
     Im = fread(f, [x,y], 'uint8');
     volume(:,:,i) = Im;
